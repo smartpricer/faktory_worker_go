@@ -45,6 +45,10 @@ type Helper interface {
 	Bid() string
 
 	// Faktory Enterprise:
+	// the BID of the Batch associated with this callback (complete or success) job
+	CallbackBid() string
+
+	// Faktory Enterprise:
 	// open the batch associated with this job so we can add more jobs to it.
 	//
 	//   func myJob(ctx context.Context, args ...interface{}) error {
@@ -78,6 +82,12 @@ func (h *jobHelper) Jid() string {
 }
 func (h *jobHelper) Bid() string {
 	if b, ok := h.job.GetCustom("bid"); ok {
+		return b.(string)
+	}
+	return ""
+}
+func (h *jobHelper) CallbackBid() string {
+	if b, ok := h.job.GetCustom("_bid"); ok {
 		return b.(string)
 	}
 	return ""
